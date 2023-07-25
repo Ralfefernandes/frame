@@ -15,9 +15,13 @@ return new class extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('photo_url')->nullable();
-            $table->string('filename'); // Add the filename column
+            $table->string('filename');
             $table->integer('sort')->nullable();
             $table->string('edit')->nullable();
+            $table->integer('margin_top')->nullable();
+            $table->integer('margin_bottom')->nullable();
+            $table->integer('margin_left')->nullable();
+            $table->integer('margin_right')->nullable();
             $table->unsignedInteger('client_id');
             $table->timestamps();
 

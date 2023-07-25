@@ -4,6 +4,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardCarouselController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrameController;
+use App\Http\Controllers\UserUploadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,38 +18,53 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes(['register' => false]);
+
 Route::get('/', function () {
     return view('layouts.laravel');
 });
+
 Route::get('/welcome', function () {
     return view('layouts.app');
 });
+
 Route::match(['get', 'post'], '/index', [DashboardController::class, 'index'])
     ->name('dashboard.index')
     ->middleware('auth');
 
-// crud starts
-Route::post('/dashboard/create-client', [DashboardController::class, 'createClient'])->name('dashboard.create_client');
-Route::get('/dashboard{id}', [DashboardController::class, 'index'])->name('dashboard.show');
+// Group routes for dashboard with middleware
+Route::group(['middleware' => 'auth'], function () {
+    Route::post('/dashboard/create-client', [DashboardController::class, 'createClient'])->name('dashboard.create_client');
+    Route::get('/dashboard{id}', [DashboardController::class, 'index'])->name('dashboard.show');
+    Route::post('/dashboard', [DashboardController::class, 'store'])->name('dashboard.store');
+    Route::delete('/dashboard/{client}', [DashboardController::class, 'destroy'])->name('dashboard.destroy');
+    Route::get('edit/{client}', [DashboardController::class, 'edit'])->name('dashboard.edit');
+    Route::put('/dashboard/{client}', [DashboardController::class, 'update'])->name('dashboard.update');
+});
 
-Route::post('/dashboard', [DashboardController::class, 'store'])->name('dashboard.store');
-Route::delete('/dashboard/{id}', [DashboardController::class, 'destroy'])->name('dashboard.destroy');
 
 
-/// testing controller
-(Route::get('edit/{id}', [DashboardController::class, 'edit'])->name('dashboard.edit'));
-Route::put('/dashboard/{id}', [DashboardController::class, 'update'])->name('dashboard.update');
-// crud ends
+// Group routes for frames with middleware
+Route::group(['middleware' => 'auth'], function () {
+    Route::patch('frame/{client}', [FrameController::class, 'store'])->name('frames.store');
+    Route::put('/frames/{frame}', [FrameController::class, 'update'])->name('frames.update');
+    Route::get('/frames/{id}', [FrameController::class, 'show'])->name('frames.get');
+    Route::get('/frames/edit/{frame}', [FrameController::class, 'edit'])->name('frames.edit');
+    Route::post('/frames/save-sorter', [FrameController::class, 'saveSorter'])->name('frames.saveSorter');
+});
 
-// dashboard Frame
-//Route::get('/dashboard/frame', [DashboardController::class, 'showFrame'])->name('dashboard.frame');
-//Route::post('/dashboard/frame', [DashboardController::class, 'storeFrame'])->name('dashboard.frame.store');
-// end dashboard Frame
 
-// Frame Controller
-Route::post('dashboard/frame/{id}', [DashboardController::class, 'store'])->name('frames.store');
+Route::get('/user-upload/', [UserUploadController::class, 'index'])->name('user-upload');
+Route::get('/upload-photo', [UserUploadController::class, 'uploadPhoto'])->name('uploadPhoto');
 
-// End Frame controller
+
+
+
+Route::group(['middleware' => 'auth'], function (){
+
+});
+
+
 
 // other controller to be use it later
 Route::get('/dashboard/autoLogin/{id}', [ClientController::class, 'autoLogin'])->name('dashboard.autoLogin')->middleware('signed');
@@ -56,6 +72,5 @@ Route::get('/dashboard/autoLogin/{id}', [ClientController::class, 'autoLogin'])-
 Route::get('/client/create', [ClientController::class, 'showCreateForm'])->name('client.showCreateForm');
 Route::post('/client/create', [ClientController::class, 'create'])->name('client.create');
 Route::get('/client/autoLogin/{id}', [ClientController::class, 'autoLogin'])->name('client.autoLogin')->middleware('signed');
-Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

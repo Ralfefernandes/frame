@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ClientDataEditRequest;
 use App\Http\Requests\ClientDataRequest;
 use App\Models\Client;
-use App\Models\Frame;
-//use App\Traits\ClientAttributeTrait;
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 
 class DashboardController extends Controller
@@ -21,156 +21,116 @@ class DashboardController extends Controller
 
     public function createClient(ClientDataRequest $request)
     {
-        $user = Auth::user();
+        Auth::user();
 
         $validatedData = $request->validated();
-        $client = new Client;
 
-        $client->name = $validatedData['name'];
-        $client->primary_color = $validatedData['primary_color'];
-        $client->second_color = $validatedData['second_color'];
-        $client->collect_email = $validatedData['collect_email'];
-        $client->consent_for_questions = $validatedData['consent_for_questions'];
+        // Generate a unique URL using Str::random(16) and make sure it's unique in the 'clients' table
+        do {
+            $url = Str::random(4);
+        } while (Client::where('url', $url)->exists());
 
+        $validatedData['url'] = $url;
 
+        $client = Client::create($validatedData);
 
         if ($request->hasFile('logo')) {
             $logoFile = $request->file('logo');
-            $logoPath = '/klanten/logo/' . $logoFile->getClientOriginalName();
-            $logoFile->move(public_path('klanten/logo'), $logoPath);
-            $client->logo = $logoPath;
+            $logoPath = 'klanten/logo/' . $logoFile->getClientOriginalName();
+            $logoFile->move(public_path('klanten/logo'), $logoFile->getClientOriginalName()); // just the file name here
+            $client->update(['logo' => $logoPath]);
         }
-
         $client->save();
 
 
-        return response()->json(['message' => 'Client created successfully']);
+        return response()->json(['message' => 'Client created successfully', 'url' => $url] );
     }
 
     public function index(Request $request)
     {
+
         $search = $request->input('search');
 
-        $clientsQuery = Client::query();
-
-        if ($search) {
-            $clientsQuery->where('name', 'LIKE', "%$search%");
-            // Add more conditions for searching other fields if needed
-        }
-
-        $allClients = $clientsQuery->get();
-
-        $modifiedClients = $allClients->map(function ($client) {
-            $client->collect_email = $client->collect_email ? 'Yes' : 'No';
-            $client->consent_for_questions = $client->consent_for_questions ? 'Yes' : 'No';
-            return $client;
-        });
+        $modifiedClients = Client::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%$search%");
+            })
+            ->get()
+            ->map(function ($client) {
+//                $client->collect_email = $client->collect_email ? 0 : 1;
+//                $client->consent_for_questions = $client->consent_for_questions ? 0 : 1;
+                return $client;
+            });
 
         $width = 50;
         $height = 50;
+        $clients = Client::paginate(10); // Fetch all clients and paginate with 10 clients per page
 
-        return view('dashboard.index', compact('modifiedClients', 'width', 'height'));
+        return view('dashboard.klant.index', compact('clients','modifiedClients', 'width', 'height'));
     }
 
-
-    public function destroy($id)
+    public function destroy(Client $client)
     {
-        // Retrieve the client by ID
-        $client = Client::find($id);
 
-        // Check if the client exists
-        if (!$client) {
-            return redirect()->back()->with('error', 'Client not found.');
-        }
 
         // Delete the client
         $client->delete();
+
         // Redirect to the appropriate page
         return redirect()->route('dashboard.index')->with('success', 'Client deleted successfully.');
     }
 
-    public function edit($id, Request $request)
-    {
-        $client = Client::findOrFail($id);
-        $modifiedClients = $this->transformBooleanValues([$client]);
 
+    public function edit(Client $client, Request $request)
+    {
+        $modifiedClients = $this->transformBooleanValues([$client]);
         // image
         $width = 50;
         $height = 50;
 
+        // get the frames per id
+        $frames = $client->frames()->orderBy('sort')->get();
 
-        $frames = Frame::with('client')->get();
 
-//        $frame = $frames->first(); // Get the first frame from the collection
-        return view('dashboard.edit', compact('frames' ,'client', 'modifiedClients', 'width', 'height'));
+        $tableName = 'frames';
+        $columnNames = Schema::getColumnListing($tableName);
+        $desiredColumns = ['title', 'filename', 'photo_url'];
+        $filteredColumns = array_intersect($columnNames, $desiredColumns);
+
+
+        return view('dashboard.klant.edit', compact('filteredColumns',
+            'frames', 'client', 'modifiedClients', 'width', 'height'));
     }
 
-
-    // frame store
-    public function store(Request $request)
-    {
-        // validate the request data
-        $validatedData = $request->validate([
-            'frame_name' => 'required|string',
-            'frame_filename' => 'required|string',
-            'frame_image' => 'required|image'
-        ]);
-
-        // Create a new frame instance
-        $frame = new Client();
-        $frame->title = $validatedData['frame_name'];
-        $frame->filename = $validatedData['frame_filename'];
-
-        // upload the frame image
-        if ($request->hasFile('frame_image')) {
-            $frameFile = $request->file('frame_image');
-            $framePath = '/frames/photos/' . $frameFile->getClientOriginalName();
-            $frameFile->move(public_path('frames/photos'), $framePath);
-            $frame->photo_url = $framePath;
-        }
-        // Save the frame to the database
-        $frame->save();
-
-        // Redirect or return a response as needed
-        return redirect()->route('dashboard.edit', ['id' => $frame->client_id]);
-
-    }
     private function transformBooleanValues($clients)
     {
         return collect($clients)->map(function ($client) {
-            $client->collect_email = $client->collect_email ? 'Yes' : 'No';
-            $client->consent_for_questions = $client->consent_for_questions ? 'Yes' : 'No';
+//            $client->collect_email = $client->collect_email ? 0 : 1;
+//            $client->consent_for_questions = $client->consent_for_questions ? 0 : 1;
             return $client;
         });
     }
 
 
-    public function update(ClientDataEditRequest $request, $id)
+    public function update(ClientDataEditRequest $request, Client $client)
     {
-        // Validate the request data
-        $validatedData = $request->validated();
-
-
-        // Find the client
-        $client = Client::findOrFail($id);
-
         // Update the client attributes
-        $client->name = $validatedData['name'];
-        $client->primary_color = $validatedData['primary_color'];
-        $client->second_color = $validatedData['second_color'];
-        $client->collect_email = $request->has('collect_email');
-        $client->consent_for_questions = $request->has('consent_for_questions');
+        $client->update([
+            'name' => $request->name,
+            'primary_color' => $request->primary_color,
+            'second_color' => $request->second_color,
+            'collect_email' => $request->input('collect_email', 0),
+            'consent_for_questions' => $request->input('consent_for_questions', 0),
+        ]);
 
         // Handle the logo update
         if ($request->hasFile('logo')) {
             $logoFile = $request->file('logo');
             $logoPath = '/klanten/logo/' . $logoFile->getClientOriginalName();
             $logoFile->move(public_path('klanten/logo'), $logoPath);
-            $client->logo = $logoPath;
+            $client->update(['logo' => $logoPath]);
         }
 
-
-        // Save the client
         $client->save();
 
         // Set the width and height for the logo image
@@ -179,7 +139,5 @@ class DashboardController extends Controller
 
         return redirect()->route('dashboard.index', compact('client',  'width', 'height'));
     }
-
-
 
 }

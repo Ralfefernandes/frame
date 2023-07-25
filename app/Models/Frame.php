@@ -8,10 +8,9 @@ use Illuminate\Support\Facades\Schema;
 
 class Frame extends Model
 {
-
     use HasFactory;
 
-    protected $fillable = ['title', 'filename', 'photo_url', 'sort', 'client_id','edit'];
+    protected $fillable = ['title', 'filename', 'photo_url', 'sort', 'client_id','edit', 'margin_top', 'margin_bottom', 'margin_left', 'margin_right'];
 
     public function client()
     {

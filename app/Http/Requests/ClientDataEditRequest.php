@@ -24,10 +24,10 @@ class ClientDataEditRequest extends FormRequest
         return [
             'name' => 'required',
             'logo' => 'image',
-            'primary_color' => 'nullable',
-            'second_color' => 'nullable',
-            'collect_email' => 'nullable',
-            'consent_for_questions' => 'nullable',
+            'primary_color' => 'required|regex:/^rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)$/',
+            'second_color' => 'required|regex:/^rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)$/',
+            'collect_email' => 'boolean',
+            'consent_for_questions' => 'boolean',
         ];
     }
     public function attributes()

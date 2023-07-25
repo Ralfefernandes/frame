@@ -40,3 +40,20 @@
     z-index: 1;
     height: 0; /* Use auto height */
 }
+
+th:nth-child(n+2) {
+    position:relative;
+    left:1rem!important;
+
+}
+
+/* background frames */
+
+tr.sortable-item.bg-success-transparent {
+    background-color: rgb(244 245 246 / 50%) !important; /* Blue */
+
+}
+tr.sortable-item.bg-primary-transparent{
+    background-color: rgb(224 224 224 / 50%) !important; /* Green */
+
+}

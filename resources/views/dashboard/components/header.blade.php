@@ -11,6 +11,8 @@
     <!-- Start css -->
     <!-- Start css -->
     <!-- Switchery css -->
+
+
     <link href="{{('/assets/css/swiper-bundle.min.css')}}" rel="stylesheet">
     <link href="{{('/assets/css/frame.css')}}" rel="stylesheet">
     <link href="/assets/plugins/switchery/switchery.min.css" rel="stylesheet">
@@ -19,6 +21,7 @@
     <link href="/assets/css/flag-icon.min.css" rel="stylesheet" type="text/css">
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css">
     <!-- End css -->
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
@@ -38,7 +41,7 @@
                 <div class="vertical-menu-icon">
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         <div class="logobar">
-                            <a href="index.html" class="logo logo-small"><img src="/assets/images/small_logo" class="img-fluid" alt="logo"></a>
+{{--                            <a href="{{url('dashboard.index')}}" class="logo logo-small"><img src="/assets/images/logo.svg" class="img-fluid" alt="logo"></a>--}}
                         </div>
                         <a class="nav-link" id="v-pills-crm-tab" data-toggle="pill" href="#v-pills-crm" role="tab" aria-controls="v-pills-crm" aria-selected="true"><img src="/assets/images/svg-icon/crm.svg" class="img-fluid" alt="CRM" data-toggle="tooltip" data-placement="top" title="CRM"></a>
                         <a class="nav-link" id="v-pills-ecommerce-tab" data-toggle="pill" href="#v-pills-ecommerce" role="tab" aria-controls="v-pills-ecommerce" aria-selected="false"><img src="/assets/images/svg-icon/ecommerce.svg" class="img-fluid" alt="eCommerce" data-toggle="tooltip" data-placement="top" title="eCommerce"></a>
@@ -50,7 +53,7 @@
                 </div>
                 <div class="vertical-menu-detail">
                     <div class="logobar">
-                        <a href="index.html" class="logo logo-large"><img src="{{('/assets/images/.svg')}}" class="img-fluid" alt="logo"></a>
+                        <a href="index.html" class="logo logo-large"><img src="{{('/assets/images/logo.svg')}}" class="img-fluid" alt="logo"></a>
                     </div>
                     <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade" id="v-pills-crm" role="tabpanel" aria-labelledby="v-pills-crm-tab">
@@ -70,7 +73,7 @@
                                 {{--                                    <li><a href="hospital-appointment.html"><img src="assets/images/svg-icon/calender.svg" class="img-fluid" alt="appointments">Appointments</a></li>--}}
                                 {{--                                    <li><a href="hospital-doctor.html"><img src="assets/images/svg-icon/doctor.svg" class="img-fluid" alt="doctors">Doctors</a></li>--}}
                                 <li>
-                                    <a href="javaScript:void();">
+                                    <a href="{{ route('dashboard.index') }}">
                                         <img src="/assets/images/svg-icon/backend.svg" class="img-fluid" alt="backend"><span>Klanten</span>
                                     </a>
 {{--                                    <ul class="vertical-submenu">--}}
@@ -179,17 +182,6 @@
                                                            class="profile-icon"><img src="/assets/images/svg-icon/logout.svg" class="img-fluid" alt="logout"> {{ __('Logout') }}
 
                                                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                                                @csrf
-                                                            </form>
-                                                        </a>
-                                                    </li>
-                                                    <li class="media dropdown-item">
-                                                        <a href="{{ route('register') }}"
-                                                           onclick="event.preventDefault();
-                                                                                document.getElementById('logout-form').submit();"
-                                                           class="profile-icon"><img src="/assets/images/svg-icon/customers.svg" class="img-fluid" alt="Register"> {{ __('Register') }}
-
-                                                            <form id="logout-form" action="{{ route('register') }}" method="POST" class="d-none">
                                                                 @csrf
                                                             </form>
                                                         </a>

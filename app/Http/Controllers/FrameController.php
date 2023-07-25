@@ -2,92 +2,104 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateFrameRequest;
 use App\Models\Client;
-use App\Models\DashboardCarousel;
 use App\Models\Frame;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class FrameController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
+    public function store(Request $request, Client $client)
     {
-        //
+        // Upload the frame image
+        if ($request->hasFile('frame_image')) {
+            $frameFile = $request->file('frame_image');
+            $framePath = '/frames/photos/' . $frameFile->getClientOriginalName();
+            $frameFile->move(public_path('frames/photos'), $framePath);
+        }
+
+        // Create a new frame instance
+        $client->frames()->create([
+            'title' => $request->frame_name,
+            'filename' => $request->frame_filename,
+            'photo_url' => $framePath ?? null
+        ]);
+
+        // Redirect or return a response as needed
+        return redirect()->route('dashboard.edit', $client->id)
+            ->with('success', 'Client deleted successfully.');
+
     }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function edit(Frame $frame)
     {
+        $frame->load('client'); // Load the client relationship
+        $client = $frame->client;
+        $filteredColumns = array_diff(array_keys($frame->getAttributes()), ['id', 'created_at', 'updated_at', 'sort',
+            'edit', 'client_id','margin_top','margin_bottom', 'margin_left', 'margin_right', ]);
+        $frame->photo_url = str_replace('_', '', $frame->photo_url);
 
+        return view('dashboard.frame.edit', compact('client','frame', 'filteredColumns'));
 
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-//    public function store(Request $request)
-//    {
-//        // validate the request data
-//        $validatedData = $request->validate([
-//            'frame_name' => 'required|string',
-//            'frame_filename' => 'required|string',
-//            'frame_image' => 'required|image'
-//        ]);
-//
-//        // Create a new frame instance
-//        $frame = new Client();
-//        $frame->title = $validatedData['frame_name'];
-//        $frame->filename = $validatedData['frame_filename'];
-//
-//        // upload the frame image
-//        if ($request->hasFile('frame_image')) {
-//            $frameFile = $request->file('frame_image');
-//            $framePath = '/frames/photos/' . $frameFile->getClientOriginalName();
-//            $frameFile->move(public_path('frames/photos'), $framePath);
-//            $frame->photo_url = $framePath;
-//        }
-//        // Save the frame to the database
-//        $frame->save();
-//
-//        // Redirect or return a response as needed
-//        return redirect()->route('dashboard.edit', ['id' => $frame->client_id]);
-//
-//    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateFrameRequest $request, Frame $frame)
     {
-        //
+        // Validate the request data
+        $request->validated();
+
+        // Handle the image upload
+        if ($request->hasFile('photo_url')){
+            $fileUrl = $request->file('photo_url');
+            $photoUrlPath = '/frames/photos/' . $fileUrl->getClientOriginalName();
+            $fileUrl->move(public_path('frames/photos'), $photoUrlPath);
+            $frame->update(['photo_url' => $photoUrlPath]);
+        }
+        $frame_id = $frame->client_id;
+
+        // Update the frame attributes
+        $frame->update([
+            'title' => $request->title,
+            'filename' => $request->filename,
+        ]);
+
+
+        return redirect()->route('dashboard.edit', ['client' => $frame_id]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // to save sort
+    public function saveSorter(Request $request)
     {
-        //
+        $order = $request->input('order');
+
+        if (!is_array($order)) {
+            return response()->json(['message' => 'Failed to decode order'], 400); // Bad Request
+        }
+
+        Log::info("Order Array:", $order);
+
+        try {
+            DB::transaction(function () use ($order) {
+                foreach ($order as $index => $frameId) {
+                    $frame = Frame::find($frameId);
+                    if ($frame) {
+                        $frame->sort = $index + 1;
+                        $frame->save();
+                        Log::info("Frame {$frame->id} saved with sort value: {$frame->sort}");
+                    }
+                }
+            });
+
+            return response()->json(['message' => 'Order saved successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error occurred: ' . $e->getMessage()], 500);
+        }
     }
+
+
+
 }

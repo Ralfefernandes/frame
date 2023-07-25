@@ -26,8 +26,8 @@ class ClientDataRequest extends FormRequest
             'logo' => 'required|image',
             'primary_color' => 'nullable',
             'second_color' => 'nullable',
-            'collect_email' => 'nullable',
-            'consent_for_questions' => 'nullable',
+            'collect_email' => 'boolean',
+            'consent_for_questions' => 'boolean',
         ];
     }
     public function attributes()

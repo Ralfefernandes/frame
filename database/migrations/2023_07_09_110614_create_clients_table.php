@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('primary_color', 20)->nullable();
+            $table->string('second_color', 20)->nullable();
             $table->string('logo');
-            $table->string('primary_color')->nullable(); // Changed from 'primary_color'
-            $table->string('second_color')->nullable(); // Changed from 'secondary_color'
             $table->boolean('collect_email')->default(false);
             $table->boolean('consent_for_questions')->default(false);
             $table->timestamps();
