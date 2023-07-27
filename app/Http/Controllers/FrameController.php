@@ -71,6 +71,14 @@ class FrameController extends Controller
         return redirect()->route('dashboard.edit', ['client' => $frame_id]);
     }
 
+    public function destroy(Frame $frame)
+    {
+        // Delete the client
+        $frame->delete();
+
+        // Redirect to the appropriate page
+        return back()->with('success', 'Frame deleted successfully.');
+    }
     // to save sort
     public function saveSorter(Request $request)
     {

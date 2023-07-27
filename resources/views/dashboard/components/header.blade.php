@@ -41,7 +41,6 @@
                 <div class="vertical-menu-icon">
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         <div class="logobar">
-{{--                            <a href="{{url('dashboard.index')}}" class="logo logo-small"><img src="/assets/images/logo.svg" class="img-fluid" alt="logo"></a>--}}
                         </div>
                         <a class="nav-link" id="v-pills-crm-tab" data-toggle="pill" href="#v-pills-crm" role="tab" aria-controls="v-pills-crm" aria-selected="true"><img src="/assets/images/svg-icon/crm.svg" class="img-fluid" alt="CRM" data-toggle="tooltip" data-placement="top" title="CRM"></a>
                         <a class="nav-link" id="v-pills-ecommerce-tab" data-toggle="pill" href="#v-pills-ecommerce" role="tab" aria-controls="v-pills-ecommerce" aria-selected="false"><img src="/assets/images/svg-icon/ecommerce.svg" class="img-fluid" alt="eCommerce" data-toggle="tooltip" data-placement="top" title="eCommerce"></a>
@@ -53,7 +52,7 @@
                 </div>
                 <div class="vertical-menu-detail">
                     <div class="logobar">
-                        <a href="index.html" class="logo logo-large"><img src="{{('/assets/images/logo.svg')}}" class="img-fluid" alt="logo"></a>
+                        <a href="index.html" class="logo logo-large"><img src="{{('/assets/images/logo.jpeg')}}" class="img-fluid" alt="logo"></a>
                     </div>
                     <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade" id="v-pills-crm" role="tabpanel" aria-labelledby="v-pills-crm-tab">
@@ -68,7 +67,7 @@
 
                         <div class="tab-pane fade show active" id="v-pills-hospital" role="tabpanel" aria-labelledby="v-pills-hospital-tab">
                             <ul class="vertical-menu">
-                                <li><h5 class="menu-title">TheMindOffice</h5></li>
+                                <li><h5 class="menu-title">Schuttelaar & Partners</h5></li>
                                 <li><a href="dashboard-hospital.html"><img src="/assets/images/svg-icon/dashboard.svg" class="img-fluid" alt="dashboard">Dashboard</a></li>
                                 {{--                                    <li><a href="hospital-appointment.html"><img src="assets/images/svg-icon/calender.svg" class="img-fluid" alt="appointments">Appointments</a></li>--}}
                                 {{--                                    <li><a href="hospital-doctor.html"><img src="assets/images/svg-icon/doctor.svg" class="img-fluid" alt="doctors">Doctors</a></li>--}}

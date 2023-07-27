@@ -28,6 +28,8 @@ class ClientDataRequest extends FormRequest
             'second_color' => 'nullable',
             'collect_email' => 'boolean',
             'consent_for_questions' => 'boolean',
+            'nullable' => 'nullable',
+
         ];
     }
     public function attributes()

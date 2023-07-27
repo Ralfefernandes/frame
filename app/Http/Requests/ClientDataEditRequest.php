@@ -24,9 +24,10 @@ class ClientDataEditRequest extends FormRequest
         return [
             'name' => 'required',
             'logo' => 'image',
-            'primary_color' => 'required|regex:/^rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)$/',
-            'second_color' => 'required|regex:/^rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)$/',
+            'primary_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
+            'second_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
             'collect_email' => 'boolean',
+            'url' => 'nullable',
             'consent_for_questions' => 'boolean',
         ];
     }

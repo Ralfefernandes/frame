@@ -69,20 +69,11 @@ class DashboardController extends Controller
         return view('dashboard.klant.index', compact('clients','modifiedClients', 'width', 'height'));
     }
 
-    public function destroy(Client $client)
+
+    public function edit(Client $client,  Request $request)
     {
 
-
-        // Delete the client
-        $client->delete();
-
-        // Redirect to the appropriate page
-        return redirect()->route('dashboard.index')->with('success', 'Client deleted successfully.');
-    }
-
-
-    public function edit(Client $client, Request $request)
-    {
+        $client->save();
         $modifiedClients = $this->transformBooleanValues([$client]);
         // image
         $width = 50;
@@ -112,7 +103,7 @@ class DashboardController extends Controller
     }
 
 
-    public function update(ClientDataEditRequest $request, Client $client)
+    public function update(ClientDataEditRequest $request, Client $client): \Illuminate\Http\RedirectResponse
     {
         // Update the client attributes
         $client->update([
@@ -139,5 +130,16 @@ class DashboardController extends Controller
 
         return redirect()->route('dashboard.index', compact('client',  'width', 'height'));
     }
+
+    public function destroy(Client $client)
+    {
+        // Delete the client
+        $client->delete();
+
+        // Redirect to the appropriate page
+        return redirect()->route('dashboard.index')->with('success', 'Client deleted successfully.');
+    }
+
+
 
 }

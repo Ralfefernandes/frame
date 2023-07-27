@@ -61,7 +61,7 @@
                             </div>
                         </td>
                         @foreach($client->getAttributes() as $fieldName => $fieldValue)
-                            @if ($fieldName !== 'id' && !in_array($fieldName, ['created_at', 'updated_at', 'name', 'primary_color', 'second_color']))
+                            @if ($fieldName !== 'id' && !in_array($fieldName, ['created_at', 'updated_at', 'name', 'primary_color','url', 'second_color']))
                                 <td class="row-cols-md-7">
                                     @if ($fieldName === 'logo')
                                         <img src="{{ asset($fieldValue) }}" alt="Logo" class="logo-image" style="width: {{ $width }}px; height: {{ $height }}px;">

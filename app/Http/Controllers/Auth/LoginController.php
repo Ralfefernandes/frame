@@ -94,9 +94,18 @@ class LoginController extends Controller
     {
         $credentials = $this->credentials($request);
 
-        if(substr(strrchr($credentials['email'], "@"), 1) !== 'themindoffice.nl'){
+        // Define an array of allowed email extensions
+        $allowedEmailExtensions = ['angotec.ao', 'schuttelaar.nl'];
+
+        // Extract the email extension from the provided email address
+        $email = $credentials['email'];
+        $extension = substr(strrchr($email, "@"), 1);
+
+        // Check if the email extension is in the allowed list
+        if (!in_array($extension, $allowedEmailExtensions)) {
             return false;
         }
+
         return $this->guard()->attempt(
             $credentials, $request->filled('remember')
         );

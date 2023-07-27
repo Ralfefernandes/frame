@@ -51,7 +51,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/frames/{id}', [FrameController::class, 'show'])->name('frames.get');
     Route::get('/frames/edit/{frame}', [FrameController::class, 'edit'])->name('frames.edit');
     Route::post('/frames/save-sorter', [FrameController::class, 'saveSorter'])->name('frames.saveSorter');
+    Route::delete('/frames/{frame}', [FrameController::class, 'destroy'])->name('frames.destroy');
+
 });
+
 
 
 Route::get('/user-upload/', [UserUploadController::class, 'index'])->name('user-upload');
