@@ -58,8 +58,12 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 Route::get('/user-upload/', [UserUploadController::class, 'index'])->name('user-upload');
-Route::get('/upload-photo', [UserUploadController::class, 'uploadPhoto'])->name('uploadPhoto');
+Route::put('/user-upload/upload-photo', [UserUploadController::class, 'uploadPhoto'])->name('upload-photo');
 
+// Testing
+Route::post('/upload/{frame}',[UserUploadController::class, 'saveCroppedImage'] )->name('save.cropped.image');
+ // 3 testing
+    Route::post('/update/{frame}',[UserUploadController::class, 'update'] )->name('upload-user.update');
 
 
 

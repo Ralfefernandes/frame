@@ -1,91 +1,87 @@
-@extends('layouts.user-upload') <!-- Replace 'layouts.app' with your desired layout -->
 
-@extends('layouts.app') <!-- Assuming you have a layout file called 'app.blade.php' -->
+@extends('layouts.app')
+
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Upload Photo') }}</div>
 
+        @include('dashboard.components.userapp.head')
+
+        @if(session('view') ===  'user-upload.update')
+            @include('user-upload.update')
+
+        @else
+            <!-- Start Contentbar -->
+    <div class="contentbar">
+
+        <!-- Start row -->
+        <div class="row">
+            <!-- Start col -->
+            <div class="col-lg-7 col-xl-8">
+                <div class="card m-b-30">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Image Cropping</h5>
+                    </div>
                     <div class="card-body">
-                        <form id="uploadForm" enctype="multipart/form-data" action="{{ route('uploadPhoto') }}" method="POST">
+                        @php
+                            // Retrieve the selected_frame_id from the session
+                            $selectedFrameId = session('selected_frame_id');
+                        @endphp
+
+                        <form id="croppedImageForm" action="{{ route('save.cropped.image', $selectedFrameId) }}" method="post" enctype="multipart/form-data">
                             @csrf
+                            @method('POST')
 
-                            <div class="form-group">
-                                <label for="photoInput">{{ __('Choose Photo') }}</label>
-                                <input type="file" name="photo" accept="image/*" id="photoInput" class="form-control{{ $errors->has('photo') ? ' is-invalid' : '' }}">
-                                @if ($errors->has('photo'))
-                                    <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('photo') }}</strong>
-                                </span>
-                                @endif
+                            <input type="hidden" name="frame_id" value="{{ session('selected_frame_id') }}">
+                            <div class="img-container">
+                                <img src="{{ asset('frames/photos/' . $photoFileName) }}" id="image" class="cropper-hidden" alt="Picture" data-type="image/jpeg">
+                            </div>
+                            <!-- Input field for the title caption -->
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" placeholder="Enter title">
                             </div>
 
-                            <div class="form-group">
-                                <label for="titleInput">{{ __('Title') }}</label>
-                                <input type="text" name="title" placeholder="Enter title" id="titleInput" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" required>
-                                @if ($errors->has('title'))
-                                    <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('title') }}</strong>
-                                </span>
-                                @endif
+                            <!-- Input field for the filename caption -->
+                            <div class="mb-3">
+                                <label for="filename" class="form-label">Filename</label>
+                                <input type="text" class="form-control" id="filename" name="filename" value="{{ old('filename') }}" placeholder="Enter filename">
                             </div>
+                            <!-- Hidden input fields to store the cropped image data -->
+                            <input type="hidden" id="dataX" name="dataX" value="">
+                            <input type="hidden" id="dataY" name="dataY" value="">
+                            <input type="hidden" id="dataHeight" name="dataHeight" value="">
+                            <input type="hidden" id="dataWidth" name="dataWidth" value="">
+                            <!-- Hidden input fields to store the margin details -->
+                            <input type="hidden" name="marginTop" id="marginTop">
+                            <input type="hidden" name="marginBottom" id="marginBottom">
+                            <input type="hidden" name="marginLeft" id="marginLeft">
+                            <input type="hidden" name="marginRight" id="marginRight">
 
-                            <button id="previewButton" class="btn btn-primary" style="display: none;">{{ __('Preview Photo') }}</button>
-                            <button id="uploadButton" class="btn btn-primary" style="display: none;">{{ __('Upload Photo') }}</button>
+                            <!-- Hidden input field to store the cropped image data -->
+                            <input type="hidden" name="croppedImageData" id="croppedImageData">
 
-                            <div>
-                                @if(isset($photoUrl))
-                                    <img src="{{ asset($photoUrl) }}" alt="Uploaded Photo" style="max-width: 100%;">
-                                @endif
-                            </div>
+                            <!-- Add the button for saving the cropped image and details -->
+                            <button type="submit" id="saveCroppedImageBtn" class="btn btn-primary">Save Cropped Image</button>
 
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                    <button type="submit" id="chooseFileButton" class="btn btn-primary">{{ __('Choose Photo') }}</button>
-                                </div>
-                            </div>
                         </form>
                     </div>
                 </div>
             </div>
+
+            <!-- End col -->
+            <!-- Start col -->
         </div>
+        <!-- End row -->
+
     </div>
+    <!-- End Contentbar -->
 
-    <script>
-        document.getElementById('chooseFileButton').addEventListener('click', function () {
-            document.getElementById('photoInput').click();
-        });
 
-        document.getElementById('photoInput').addEventListener('change', function () {
-            const fileInput = document.getElementById('photoInput');
-            const file = fileInput.files[0];
+    @include('dashboard.components.userapp.footer')
+        @endif
 
-            if (file) {
-                document.getElementById('titleInput').style.display = 'block';
-                document.getElementById('previewButton').style.display = 'block';
-            } else {
-                document.getElementById('titleInput').style.display = 'none';
-                document.getElementById('previewButton').style.display = 'none';
-                document.getElementById('uploadButton').style.display = 'none';
-            }
-        });
+<script>
 
-        document.getElementById('previewButton').addEventListener('click', function () {
-            const fileInput = document.getElementById('photoInput');
-            const file = fileInput.files[0];
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('photoPreview').src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-
-                document.getElementById('uploadButton').style.display = 'block';
-            }
-        });
-    </script>
+</script>
 @endsection
+

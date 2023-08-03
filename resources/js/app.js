@@ -17,5 +17,3 @@ import './bootstrap';
 //         ExampleComponent,
 //     },
 // }).mount('#app');
-
-<

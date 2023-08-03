@@ -12,6 +12,8 @@ class Frame extends Model
 
     protected $fillable = ['title', 'filename', 'photo_url', 'sort', 'client_id','edit', 'margin_top', 'margin_bottom', 'margin_left', 'margin_right'];
 
+
+
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id', 'id');

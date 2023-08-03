@@ -2,90 +2,93 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CropRequest;
 use App\Models\Frame;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+
 
 class UserUploadController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    private $photoFileName;
+    public function index(Request $request)
     {
         // Fetch data from 'frames' table
         $frames = Frame::all();
+
         return view('user-upload.index', ['frames' => $frames]);
     }
 
+
     public function uploadPhoto(Request $request, Frame $frames)
     {
-        $request->validate([
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust the validation rules as needed
-            'title' => 'required|string',
-        ]);
 
-        // Process the uploaded photo
-        if ($request->hasFile('photo')) {
-            $photoFile = $request->file('photo');
+        $file = $request->file('photo');
+        if ($file) {
+            $request->validate([
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust the validation rules as needed
+            ]);
+            // Move the uploaded photo to the desired directory
             $photoPath = 'frames/photos/';
-            $photoFileName = $photoFile->getClientOriginalName();
-            $photoFile->move(public_path($photoPath), $photoFileName);
+            $this->photoFileName = $request->file('photo')->getClientOriginalName();
+            $request->file('photo')->move(public_path($photoPath), $this->photoFileName);
 
-            // Save the photo URL to the database
-            $frame = new Frame();
-            $frame->photo_url = $photoPath . $photoFileName;
-            $frame->title = $request->input('title'); // Add the title to the frame model
-            $frame->save();
+            $photoFileName = $request->input('photoFileName');
 
-            // Optionally, you can redirect back to the upload form after successful upload
-            return view('user-upload.upload');
+            $this->photoFileName;
+
+            // If the validation fails or other required fields are not filled, show the upload form again
+            return view('user-upload.upload')->with([
+                'photoFileName' => $this->photoFileName,
+                'frames' => $frames,
+            ]);
         }
-    }
-
-
-    public function create()
-    {
-        //
+        // If no file is uploaded or an error occurs, redirect back to the upload form
+        return redirect()->route('user-upload.upload', $frames);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @throws \JsonException
      */
-    public function store(Request $request)
+    public function saveCroppedImage(CropRequest $request, Frame $frame)
     {
-        //
+        dd($this->photoFileName);
+        // Get the validated margin details
+        $validatedData = $request->validated();
+
+        // Perform the margin calculation
+        $marginTop = $validatedData['dataY'];
+        $marginBottom = $validatedData['dataHeight'] - $marginTop;
+        $marginLeft = $validatedData['dataX'];
+        $marginRight = $validatedData['dataX'] + $validatedData['dataWidth'];
+
+        // Convert the margin details to a JSON string
+        $marginDetails = json_encode([
+            'marginTop' => $marginTop,
+            'marginBottom' => $marginBottom,
+            'marginLeft' => $marginLeft,
+            'marginRight' => $marginRight,
+        ], JSON_THROW_ON_ERROR);
+
+
+        // validation title and filename
+        $title = $validatedData['title'];
+        $filename = $validatedData['filename'];
+;        // Create a new Frame instance with the new data
+        $newFrame = Frame::create([
+            'title' => $title,
+            'filename' => $filename,
+            'margin_top' => $marginTop,
+            'margin_bottom' => $marginBottom,
+            'margin_left' => $marginLeft,
+            'margin_right' => $marginRight,
+            'edit' => $marginDetails,
+            'client_id' => $frame->id,
+        ]);
+        $newFrame->save();
+//        $croppedImage->save();
+        // Redirect back to the upload page with the frame ID
+        return view('user-upload.update', ['frame' => $frame->id]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }
