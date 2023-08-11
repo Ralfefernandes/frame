@@ -25,21 +25,20 @@ class UserUploadController extends Controller
         $file = $request->file('photo');
         if ($file) {
             $request->validate([
-                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust the validation rules as needed
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
             // Move the uploaded photo to the desired directory
             $photoPath = 'frames/photos/';
             $this->photoFileName = $request->file('photo')->getClientOriginalName();
             $request->file('photo')->move(public_path($photoPath), $this->photoFileName);
 
-            $photoFileName = $request->input('photoFileName');
-
-            $this->photoFileName;
-
+            // Store the photoFileName in the session
+            session(['photoFileName' => $this->photoFileName]);
             // If the validation fails or other required fields are not filled, show the upload form again
             return view('user-upload.upload')->with([
                 'photoFileName' => $this->photoFileName,
                 'frames' => $frames,
+
             ]);
         }
         // If no file is uploaded or an error occurs, redirect back to the upload form
@@ -49,9 +48,11 @@ class UserUploadController extends Controller
     /**
      * @throws \JsonException
      */
-    public function saveCroppedImage(CropRequest $request, Frame $frame)
+
+    public function saveCroppedImage(CropRequest $request, Frame $frame, )
     {
-        dd($this->photoFileName);
+        // Retrieve photoFileName from the session
+        $photoFileName = session('photoFileName');
         // Get the validated margin details
         $validatedData = $request->validated();
 
@@ -73,6 +74,7 @@ class UserUploadController extends Controller
         // validation title and filename
         $title = $validatedData['title'];
         $filename = $validatedData['filename'];
+
 ;        // Create a new Frame instance with the new data
         $newFrame = Frame::create([
             'title' => $title,
@@ -82,6 +84,7 @@ class UserUploadController extends Controller
             'margin_left' => $marginLeft,
             'margin_right' => $marginRight,
             'edit' => $marginDetails,
+            'photo_url' => $photoFileName,
             'client_id' => $frame->id,
         ]);
         $newFrame->save();
