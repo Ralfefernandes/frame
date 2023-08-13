@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CropRequest;
+use App\Models\Client;
 use App\Models\Frame;
 use Illuminate\Http\Request;
 
@@ -10,19 +11,23 @@ use Illuminate\Http\Request;
 class UserUploadController extends Controller
 {
     private $photoFileName;
-    public function index(Request $request)
+    public function index(Request $request, $client_url)
     {
-        // Fetch data from 'frames' table
-        $frames = Frame::all();
+		// step 1 Validate the client_url parameter
+        $client = Client::where('url', $client_url)->firstOrFail();
+        $frames = $client->frames;
 
-        return view('user-upload.index', ['frames' => $frames]);
+	    // Store the client URL in the session
+	    session(['client_url' => $client_url]);
+
+        return view('user-upload.index', ['frames' => $frames, 'client_url' => $client_url]);
     }
 
 
     public function uploadPhoto(Request $request, Frame $frames)
     {
 
-        $file = $request->file('photo');
+	    $file = $request->file('photo');
         if ($file) {
             $request->validate([
                 'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -51,6 +56,11 @@ class UserUploadController extends Controller
 
     public function saveCroppedImage(CropRequest $request, Frame $frame, )
     {
+		// Retrieve the client URL from the session
+	    $client_url = session('client_url');
+
+		// Find the client based on the client URL
+	    $client = Client::where('url', $client_url)->firstOrFail();
         // Retrieve photoFileName from the session
         $photoFileName = session('photoFileName');
         // Get the validated margin details
@@ -75,19 +85,19 @@ class UserUploadController extends Controller
         $title = $validatedData['title'];
         $filename = $validatedData['filename'];
 
-;        // Create a new Frame instance with the new data
-        $newFrame = Frame::create([
-            'title' => $title,
-            'filename' => $filename,
-            'margin_top' => $marginTop,
-            'margin_bottom' => $marginBottom,
-            'margin_left' => $marginLeft,
-            'margin_right' => $marginRight,
-            'edit' => $marginDetails,
-            'photo_url' => $photoFileName,
-            'client_id' => $frame->id,
-        ]);
-        $newFrame->save();
+	    // Create a new Frame instance
+	    Frame::create([
+		    'title' => $title,
+		    'filename' => $filename,
+		    'margin_top' => $marginTop,
+		    'margin_bottom' => $marginBottom,
+		    'margin_left' => $marginLeft,
+		    'margin_right' => $marginRight,
+		    'edit' => $marginDetails,
+		    'photo_url' => $photoFileName,
+		    'client_id' => $client->id, // Set the client_id based on your logic
+	    ]);
+
 //        $croppedImage->save();
         // Redirect back to the upload page with the frame ID
         return view('user-upload.update', ['frame' => $frame->id]);

@@ -35,9 +35,7 @@
                 // Submit the form via Ajax or perform other actions
                 // You can use FormData to send the cropping data and the original image file to the server
                 const formData = new FormData(form);
-                // Add any other form data if needed
-                // formData.append('other_field', 'other_value');
-                // Perform Ajax request or other actions here
+
             });
         });
     </script>

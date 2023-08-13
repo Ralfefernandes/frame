@@ -57,7 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-Route::get('/user-upload/', [UserUploadController::class, 'index'])->name('user-upload');
+Route::get('/user-upload/{client_url}', [UserUploadController::class, 'index'])->name('user-upload');
 Route::put('/user-upload/upload-photo', [UserUploadController::class, 'uploadPhoto'])->name('upload-photo');
 
 // Testing

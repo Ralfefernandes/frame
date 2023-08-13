@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
             var doubleSlider = document.querySelectorAll('.double-slider');
             if(doubleSlider.length){
                 doubleSlider.forEach(function(e){
-                     var double = new Splide( '#'+e.id, {
+                    var double = new Splide( '#'+e.id, {
                         type:'loop',
                         autoplay:true,
                         interval:4000,
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             var trippleSlider = document.querySelectorAll('.tripple-slider');
             if(trippleSlider.length){
                 trippleSlider.forEach(function(e){
-                     var tripple = new Splide( '#'+e.id, {
+                    var tripple = new Splide( '#'+e.id, {
                         type:'loop',
                         autoplay:true,
                         padding: {
@@ -185,18 +185,16 @@ document.addEventListener('DOMContentLoaded', () => {
             var mapActivator = document.querySelectorAll('.show-map');
             var mapDisabler = document.querySelectorAll('.hide-map');
             mapActivator[0].addEventListener('click',function(e){
-               document.getElementsByClassName('card-overlay')[0].classList.add('disabled');
-               document.getElementsByClassName('card-center')[0].classList.add('disabled');
-               document.getElementsByClassName('hide-map')[0].classList.remove('disabled');
+                document.getElementsByClassName('card-overlay')[0].classList.add('disabled');
+                document.getElementsByClassName('card-center')[0].classList.add('disabled');
+                document.getElementsByClassName('hide-map')[0].classList.remove('disabled');
             })
             mapDisabler[0].addEventListener('click',function(e){
-               document.getElementsByClassName('card-overlay')[0].classList.remove('disabled');
-               document.getElementsByClassName('card-center')[0].classList.remove('disabled');
-               document.getElementsByClassName('hide-map')[0].classList.add('disabled');
+                document.getElementsByClassName('card-overlay')[0].classList.remove('disabled');
+                document.getElementsByClassName('card-center')[0].classList.remove('disabled');
+                document.getElementsByClassName('hide-map')[0].classList.add('disabled');
             })
         }
-
-
 
 
         //To Do List
@@ -276,8 +274,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const activeMenu = document.querySelectorAll('.menu-active');
                 for(let i=0; i < activeMenu.length; i++){activeMenu[i].classList.remove('menu-active');}
                 for(let i=0; i < wrappers.length; i++){wrappers[i].style.transform = "translateX(-"+0+"px)"}
-				var iframes = document.querySelectorAll('iframe');
-				iframes.forEach(el => {var hrefer = el.getAttribute('src'); el.setAttribute('newSrc', hrefer); el.setAttribute('src',''); var newSrc = el.getAttribute('newSrc');el.setAttribute('src', newSrc)});
+                var iframes = document.querySelectorAll('iframe');
+                iframes.forEach(el => {var hrefer = el.getAttribute('src'); el.setAttribute('newSrc', hrefer); el.setAttribute('src',''); var newSrc = el.getAttribute('newSrc');el.setAttribute('src', newSrc)});
             }));
         }
 
@@ -295,23 +293,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //Back to Top
         const backToTop = document.querySelectorAll('.back-to-top-icon, .back-to-top-badge, .back-to-top');
-            if(backToTop.length){
+        if(backToTop.length){
             backToTop.forEach(el => el.addEventListener('click',e =>{
                 window.scrollTo({ top: 0, behavior: `smooth` })
             }));
         }
 
-		//Check iOS Version and add min-ios15 class if higher or equal to iOS15
-		function iOSversion() {
-		  let d, v;
-		  if (/iP(hone|od|ad)/.test(navigator.platform)) {
-			v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
-			d = {status: true, version: parseInt(v[1], 10), info: parseInt(v[1], 10)+'.'+parseInt(v[2], 10)+'.'+parseInt(v[3] || 0, 10)};
-		  }else{d = {status:false, version: false, info:''}}
-		  return d;
-		}
-		let iosVer = iOSversion();
-		if (iosVer.version > 14) {document.querySelectorAll('#page')[0].classList.add('min-ios15');}
+        //Check iOS Version and add min-ios15 class if higher or equal to iOS15
+        function iOSversion() {
+            let d, v;
+            if (/iP(hone|od|ad)/.test(navigator.platform)) {
+                v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+                d = {status: true, version: parseInt(v[1], 10), info: parseInt(v[1], 10)+'.'+parseInt(v[2], 10)+'.'+parseInt(v[3] || 0, 10)};
+            }else{d = {status:false, version: false, info:''}}
+            return d;
+        }
+        let iosVer = iOSversion();
+        if (iosVer.version > 14) {document.querySelectorAll('#page')[0].classList.add('min-ios15');}
 
         //Card Extender
         const cards = document.getElementsByClassName('card');
@@ -463,11 +461,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const inputArray = document.getElementsByClassName('upload-file');
         if(inputArray.length){
             inputArray[0].addEventListener('change',prepareUpload,false);
-                function prepareUpload(event){
-                  if (this.files && this.files[0]) {
-                  var img = document.getElementById('image-data');
-                  img.src = URL.createObjectURL(this.files[0]);
-              }
+            function prepareUpload(event){
+                if (this.files && this.files[0]) {
+                    var img = document.getElementById('image-data');
+                    img.src = URL.createObjectURL(this.files[0]);
+                }
                 const files = event.target.files;
                 const fileName = files[0].name;
                 document.getElementsByClassName('file-data')[0].classList.add('disabled');
@@ -504,9 +502,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     var mapLinkEmbed = mapL1 + mapL2 + mapL3 + mapL4;
                     var mapLinkAddress = mapL1 + mapL2 + mapL3 + mapL5;
                     var mapLinkNewAPI = 'https://www.google.com/maps/@' + latitude + ','+ longitude + ',15z'
-					document.getElementsByClassName('location-map')[0].setAttribute('src',mapLinkEmbed);
-					document.getElementsByClassName('location-button')[0].setAttribute('href',mapLinkNewAPI);
-					document.getElementsByClassName('location-button')[0].classList.remove('disabled');
+                    document.getElementsByClassName('location-map')[0].setAttribute('src',mapLinkEmbed);
+                    document.getElementsByClassName('location-button')[0].setAttribute('href',mapLinkNewAPI);
+                    document.getElementsByClassName('location-button')[0].classList.remove('disabled');
                 }
                 function error() {locationCoordinates.textContent = 'Unable to retrieve your location';}
                 if (!navigator.geolocation) {locationCoordinates.textContent = 'Geolocation is not supported by your browser';}
@@ -551,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //Adding Local Storage for Visited Links
         var checkVisited = document.querySelectorAll('.check-visited');
-            if(checkVisited.length){
+        if(checkVisited.length){
             function check_visited_links(){
                 var visited_links = JSON.parse(localStorage.getItem(pwaName+'_Visited_Links')) || [];
                 var links = document.querySelectorAll('.check-visited a');
@@ -664,7 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
         var dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'))
         if(dropdownElementList.length){
             var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-            return new bootstrap.Dropdown(dropdownToggleEl);
+                return new bootstrap.Dropdown(dropdownToggleEl);
             })
         }
 
@@ -692,7 +690,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 openClass.forEach(function(e){e.classList.remove('disabled');})
                 closeClass.forEach(function(e){e.classList.add('disabled');})
             }
-             else {
+            else {
                 openClass.forEach(function(e){e.classList.add('disabled');})
                 closeClass.forEach(function(e){e.classList.remove('disabled');})
             }
@@ -706,7 +704,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         document.querySelectorAll(matchData)[0].classList.add('bg-green-dark');
                         document.querySelectorAll(matchData +' p').forEach(function(whiteText){whiteText.classList.add('color-white')});
                     }
-                     else {
+                    else {
                         document.querySelectorAll(matchData)[0].classList.add('bg-red-dark');
                         document.querySelectorAll(matchData +' p').forEach(function(whiteText){whiteText.classList.add('color-white')});
                     }
@@ -743,15 +741,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 var timedAdData = el.getAttribute('data-menu');
                 var timedAdTimer = timedAdTime;
                 var timerAdFunction = setInterval(function(){
-                  if(timedAdTimer <= 1){
+                    if(timedAdTimer <= 1){
                         clearInterval(timerAdFunction);
                         document.getElementById(timedAdData).querySelectorAll('.fa-times')[0].classList.remove('disabled');
                         document.getElementById(timedAdData).querySelectorAll('.close-menu')[0].classList.remove('no-click');
                         document.getElementById(timedAdData).querySelectorAll('span')[0].style.display ="none";
-                  } else {
-                      //console.log(timedAdTimer);
-                  }
-                  document.getElementById(timedAdData).querySelectorAll('span')[0].innerHTML = timedAdTimer -= 1;
+                    } else {
+                        //console.log(timedAdTimer);
+                    }
+                    document.getElementById(timedAdData).querySelectorAll('span')[0].innerHTML = timedAdTimer -= 1;
                 }, 1000);
             }));
         }
@@ -840,7 +838,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.location.protocol === "file:"){
             var linksLocal = document.querySelectorAll('a');
             linksLocal.forEach(el => el.addEventListener('mouseover', event => {
-               // console.log("You are seeing these errors because your file is on your local computer. For real life simulations please use a Live Server or a Local Server such as AMPPS or WAMPP or simulate a  Live Preview using a Code Editor like http://brackets.io (it's 100% free) - PWA functions and AJAX Page Transitions will only work in these scenarios.");
+                // console.log("You are seeing these errors because your file is on your local computer. For real life simulations please use a Live Server or a Local Server such as AMPPS or WAMPP or simulate a  Live Preview using a Code Editor like http://brackets.io (it's 100% free) - PWA functions and AJAX Page Transitions will only work in these scenarios.");
             }));
         }
 
@@ -851,21 +849,21 @@ document.addEventListener('DOMContentLoaded', () => {
             var searchNoResults = document.querySelectorAll('.search-no-results');
             var searchTotal = document.querySelectorAll(".search-results div")[0].childElementCount;
             var searchTrending = document.querySelectorAll('.search-trending');
-			var clearSearch = document.querySelectorAll('.clear-search')[0];
-			clearSearch.addEventListener('click',function(){
-				searchField[0].value = "";
-				clearSearch.classList.add('disabled');
-				searchNoResults[0].classList.add('disabled');
-				searchResults[0].classList.add('disabled-search-list');
-				if(searchTrending[0]){searchTrending[0].classList.remove('disabled');}
-				var searchFilterItem = document.querySelectorAll('[data-filter-item]');
-				for (let i = 0; i < searchFilterItem.length; i++) {searchFilterItem[i].classList.add('disabled');}
-			})
+            var clearSearch = document.querySelectorAll('.clear-search')[0];
+            clearSearch.addEventListener('click',function(){
+                searchField[0].value = "";
+                clearSearch.classList.add('disabled');
+                searchNoResults[0].classList.add('disabled');
+                searchResults[0].classList.add('disabled-search-list');
+                if(searchTrending[0]){searchTrending[0].classList.remove('disabled');}
+                var searchFilterItem = document.querySelectorAll('[data-filter-item]');
+                for (let i = 0; i < searchFilterItem.length; i++) {searchFilterItem[i].classList.add('disabled');}
+            })
             function searchFunction(){
                 var searchStr = searchField[0].value;
-				var searchVal = searchStr.toLowerCase();
+                var searchVal = searchStr.toLowerCase();
                 if (searchVal != '') {
-					clearSearch.classList.remove('disabled');
+                    clearSearch.classList.remove('disabled');
                     searchResults[0].classList.remove('disabled-search-list');
                     var searchFilterItem = document.querySelectorAll('[data-filter-item]');
                     for (let i = 0; i < searchFilterItem.length; i++) {
@@ -888,7 +886,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
                 if (searchVal === '') {
-					clearSearch.classList.add('disabled');
+                    clearSearch.classList.add('disabled');
                     searchResults[0].classList.add('disabled-search-list');
                     searchNoResults[0].classList.add('disabled');
                     if(searchTrending.length){searchTrending[0].classList.remove('disabled');}
@@ -910,10 +908,10 @@ document.addEventListener('DOMContentLoaded', () => {
         var searchHeader = document.querySelectorAll('[data-toggle-search]');
         if(searchHeader){
             searchHeader.forEach(el => el.addEventListener('click', event => {
-                window.scrollTo({ top: 0, behavior: `smooth` })
-                document.querySelectorAll('.header')[0].classList.toggle('header-search-active');
-            })
-        )};
+                    window.scrollTo({ top: 0, behavior: `smooth` })
+                    document.querySelectorAll('.header')[0].classList.toggle('header-search-active');
+                })
+            )};
 
         //Sharing
         var shareTitle = document.title;
@@ -1019,7 +1017,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //Tabs
         var tabTrigger = document.querySelectorAll('.tab-controls a');
-            if(tabTrigger.length){
+        if(tabTrigger.length){
             tabTrigger.forEach(function(e){
                 if(e.hasAttribute('data-active')){
                     var highlightColor = e.parentNode.getAttribute('data-highlight');
@@ -1045,10 +1043,10 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(function(){
                 if(menuFunction === "show"){
                     return document.getElementById(menuName).classList.add('menu-active'),
-                    document.querySelectorAll('.menu-hider')[0].classList.add('menu-active')
+                        document.querySelectorAll('.menu-hider')[0].classList.add('menu-active')
                 } else {
                     return document.getElementById(menuName).classList.remove('menu-active'),
-                    document.querySelectorAll('.menu-hider')[0].classList.remove('menu-active')
+                        document.querySelectorAll('.menu-hider')[0].classList.remove('menu-active')
                 }
             },menuTimeout)
         }
@@ -1120,7 +1118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //Online / Offline Settings
         //Activating and Deactivating Links Based on Online / Offline State
         function offlinePage(){
-			//Enable the code below to disable offline mode
+            //Enable the code below to disable offline mode
             //var anchorsDisabled = document.querySelectorAll('a');
             //anchorsDisabled.forEach(function(e){
             //    var hrefs = e.getAttribute('href');
@@ -1231,9 +1229,9 @@ document.addEventListener('DOMContentLoaded', () => {
             var checkPWA = document.getElementsByTagName('html')[0];
             if(!checkPWA.classList.contains('isPWA')){
                 if ('serviceWorker' in navigator) {
-                  window.addEventListener('load', function() {
-                    navigator.serviceWorker.register(pwaLocation, {scope: pwaScope}).then(function(registration){registration.update();})
-                  });
+                    window.addEventListener('load', function() {
+                        navigator.serviceWorker.register(pwaLocation, {scope: pwaScope}).then(function(registration){registration.update();})
+                    });
                 }
 
                 //Setting Timeout Before Prompt Shows Again if Dismissed
@@ -1324,9 +1322,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if(pwaNoCache === true){
             sessionStorage.clear()
             caches.keys().then(cacheNames => {
-              cacheNames.forEach(cacheName => {
-                caches.delete(cacheName);
-              });
+                cacheNames.forEach(cacheName => {
+                    caches.delete(cacheName);
+                });
             });
         }
 
@@ -1340,49 +1338,49 @@ document.addEventListener('DOMContentLoaded', () => {
         var plugLoc = "plugins/"
 
         let plugins = [
-          {
-            id: 'uniqueID', // to detect if loaded and unload if needed
-            plug: 'pluginName/plugin.js', // the main plugin javascript file
-            call: 'pluginName/pluginName-call.js', // the plugin call functions
-            style: 'pluginName/pluginName-style.css', // the plugin stylesheet
-            trigger: '.pluginTriggerClass' // the trigger that will activate the loading and initializing of the plugin
-          },
-          {
-            id: 'charts-js-plugin',
-            plug: 'charts/charts.js',
-            call: 'charts/charts-call-graphs.js',
-            trigger: '.graph'
-          },
-          {
-            id: 'count',
-            plug: 'countdown/countdown.js',
-            trigger: '.countdown'
-          },
-          {
-            id: 'gallery',
-            plug: 'glightbox/glightbox.js',
-            call: 'glightbox/glightbox-call.js',
-            style: 'glightbox/glightbox.css',
-            trigger: '[data-gallery]'
-          },
-          {
-            id: 'gallery-views',
-            call: 'galleryViews/gallery-views.js',
-            trigger: '.gallery-view-controls'
-          },
-          {
-            id: 'filter',
-            plug: 'filterizr/filterizr.js',
-            call: 'filterizr/filterizr-call.js',
-            style: 'filterizr/filterizr.css',
-            trigger: '.gallery-filter'
-          },
-          {
-            id: 'ba-slider',
-            call: 'before-after/before-after.js',
-            style: 'before-after/before-after.css',
-            trigger: '#before-after-slider'
-          }
+            {
+                id: 'uniqueID', // to detect if loaded and unload if needed
+                plug: 'pluginName/plugin.js', // the main plugin javascript file
+                call: 'pluginName/pluginName-call.js', // the plugin call functions
+                style: 'pluginName/pluginName-style.css', // the plugin stylesheet
+                trigger: '.pluginTriggerClass' // the trigger that will activate the loading and initializing of the plugin
+            },
+            {
+                id: 'charts-js-plugin',
+                plug: 'charts/charts.js',
+                call: 'charts/charts-call-graphs.js',
+                trigger: '.graph'
+            },
+            {
+                id: 'count',
+                plug: 'countdown/countdown.js',
+                trigger: '.countdown'
+            },
+            {
+                id: 'gallery',
+                plug: 'glightbox/glightbox.js',
+                call: 'glightbox/glightbox-call.js',
+                style: 'glightbox/glightbox.css',
+                trigger: '[data-gallery]'
+            },
+            {
+                id: 'gallery-views',
+                call: 'galleryViews/gallery-views.js',
+                trigger: '.gallery-view-controls'
+            },
+            {
+                id: 'filter',
+                plug: 'filterizr/filterizr.js',
+                call: 'filterizr/filterizr-call.js',
+                style: 'filterizr/filterizr.css',
+                trigger: '.gallery-filter'
+            },
+            {
+                id: 'ba-slider',
+                call: 'before-after/before-after.js',
+                style: 'before-after/before-after.css',
+                trigger: '#before-after-slider'
+            }
         ];
 
 
@@ -1415,12 +1413,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     //If plugin doesn't exist, only load the call function
                     setTimeout(function(){
-                    var loadScript = document.getElementsByTagName('script')[1],
-                        loadScriptJS = document.createElement('script');
-                    loadScriptJS.type = 'text/javascript'
-                    loadScriptJS.className = plugins[i].id+'-c'
-                    loadScriptJS.src = plugLoc + plugins[i].call;
-                    loadScript.parentNode.insertBefore(loadScriptJS, loadScript);
+                        var loadScript = document.getElementsByTagName('script')[1],
+                            loadScriptJS = document.createElement('script');
+                        loadScriptJS.type = 'text/javascript'
+                        loadScriptJS.className = plugins[i].id+'-c'
+                        loadScriptJS.src = plugLoc + plugins[i].call;
+                        loadScript.parentNode.insertBefore(loadScriptJS, loadScript);
                     },50);
                 }
                 //If Style doesn't exist in array, don't do anything
@@ -1461,4 +1459,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     init_template();
 });
-

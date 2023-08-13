@@ -7,7 +7,7 @@
 "name" : "Sticky",
 "scope" : "http://localhost:8081/",
 "display" : "fullscreen",
-"start_url" : "http://localhost:8081/user-upload",
+"start_url" : "http://localhost:8081/user-upload/",
 "short_name" : "Sticky",
 "description" : "",
 "orientation" : "portrait",

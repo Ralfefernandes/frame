@@ -5,9 +5,7 @@
 <div id="preloader"><div class="spinner-border color-highlight" role="status"></div></div>
 
 <div id="page">
-
     <div class="page-content pb-0">
-
         <a href="#" data-toggle-theme class="show-on-theme-light cover-button-top btn btn-xs rounded-xl shadow-huge btn-center-s font-900 bg-green-dark "><i class="fa fa-moon me-3"></i>DARK MODE</a>
         <a href="#" data-toggle-theme class="show-on-theme-dark cover-button-top btn btn-xs rounded-xl shadow-huge btn-center-s font-900 bg-green-dark "><i class="fa fa-sun me-3"></i>LIGHT MODE</a>
 
@@ -24,7 +22,7 @@
                                     </p>
                                     <p class="pb-4"></p>
                                 </div>
-                                <div class="card-overlay" style="height:70vh; background-image: url('{{ $frame->photo_url }}')"></div>
+                                <div class="card-overlay" style="height:70vh; background-image: url('{{ asset('frames/photos/' . $frame->photo_url) }}')"></div>
                                 <!-- setting height to 70% to make text more easy to read -->
                                 <div class="card-overlay bg-gradient-fade"></div>
                             </div>
@@ -91,7 +89,7 @@
 
     <!-- Install instructions for iOS -->
     <div id="menu-install-pwa-ios"
-        class="menu menu-box-bottom menu-box-detached rounded-l">
+         class="menu menu-box-bottom menu-box-detached rounded-l">
         <div class="boxed-text-xl mt-4 pb-3">
             <img class="rounded-l mb-3" src="{{URL::asset('/assets/userframes/app/icons/icon-128x128.png')}}" alt="img" width="90">
             <h4 class="mt-3">Add Sticky on your Home Screen</h4>
@@ -105,8 +103,8 @@
 
 </div>
 {{--<script src="assets/userframes/_service-worker.js"> </script>--}}
-<script type="text/javascript" src="{{('assets/userframes/scripts/bootstrap.min.js')}}"></script>
-<script type="text/javascript" src="{{('assets/userframes/scripts/custom.js')}}"></script>
+<script type="text/javascript" src="{{ asset('assets/userframes/scripts/bootstrap.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('assets/userframes/scripts/custom.js')}}"></script>
 
 
 <!-- Add the Service Worker registration code -->
@@ -117,8 +115,3 @@
 </body>
 
 {{--<script src="assets/userframes/_service-worker.js"> </script>--}}
-
-
-
-
-
