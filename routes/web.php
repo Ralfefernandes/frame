@@ -50,8 +50,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/frames/{frame}', [FrameController::class, 'update'])->name('frames.update');
     Route::get('/frames/{id}', [FrameController::class, 'show'])->name('frames.get');
     Route::get('/frames/edit/{frame}', [FrameController::class, 'edit'])->name('frames.edit');
-    Route::post('/frames/save-sorter', [FrameController::class, 'saveSorter'])->name('frames.saveSorter');
-    Route::delete('/frames/{frame}', [FrameController::class, 'destroy'])->name('frames.destroy');
+	Route::delete('/frames/{frame}', [FrameController::class, 'destroy'])->name('frames.destroy');
+	Route::post('/frames/save-sorter', [FrameController::class, 'saveSorter'])->name('frames.saveSorter');
 
 });
 

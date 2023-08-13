@@ -5,7 +5,7 @@
         <div class="breadcrumb-list">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{('index.html')}}">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">TheMindOffice</a></li>
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Klanten</li>
             </ol>
         </div>
