@@ -22,7 +22,7 @@
                                     </p>
                                     <p class="pb-4"></p>
                                 </div>
-                                <div class="card-overlay" style="height:70vh; background-image: url('{{ asset('frames/photos/' . $frame->photo_url) }}')"></div>
+                                <div class="card-overlay" style="height:70vh; background-image: url('{{ asset( $frame->photo_url) }}')"></div>
                                 <!-- setting height to 70% to make text more easy to read -->
                                 <div class="card-overlay bg-gradient-fade"></div>
                             </div>

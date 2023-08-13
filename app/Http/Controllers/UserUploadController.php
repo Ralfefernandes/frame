@@ -6,6 +6,7 @@ use App\Http\Requests\CropRequest;
 use App\Models\Client;
 use App\Models\Frame;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 
 class UserUploadController extends Controller
@@ -63,7 +64,13 @@ class UserUploadController extends Controller
 	    $client = Client::where('url', $client_url)->firstOrFail();
         // Retrieve photoFileName from the session
         $photoFileName = session('photoFileName');
-        // Get the validated margin details
+
+	    // Define the destination path for the moved file
+	    $photoPath = 'frames/photos/';
+
+		// Move the previously uploaded file again
+		$success = Storage::disk('public')->move($photoFileName, $photoPath . $photoFileName);
+		// Get the validated margin details
         $validatedData = $request->validated();
 
         // Perform the margin calculation
@@ -86,17 +93,21 @@ class UserUploadController extends Controller
         $filename = $validatedData['filename'];
 
 	    // Create a new Frame instance
-	    Frame::create([
-		    'title' => $title,
-		    'filename' => $filename,
-		    'margin_top' => $marginTop,
-		    'margin_bottom' => $marginBottom,
-		    'margin_left' => $marginLeft,
-		    'margin_right' => $marginRight,
-		    'edit' => $marginDetails,
-		    'photo_url' => $photoFileName,
-		    'client_id' => $client->id, // Set the client_id based on your logic
-	    ]);
+	    if ($success) {
+		    // Store the full path in the database
+		    $photoPathInDb = $photoPath . $photoFileName;
+		    Frame::create([
+			    'title' => $title,
+			    'filename' => $filename,
+			    'margin_top' => $marginTop,
+			    'margin_bottom' => $marginBottom,
+			    'margin_left' => $marginLeft,
+			    'margin_right' => $marginRight,
+			    'edit' => $marginDetails,
+			    'photo_url' => $photoPathInDb,
+			    'client_id' => $client->id, // Set the client_id based on your logic
+		    ]);
+	    }
 
 //        $croppedImage->save();
         // Redirect back to the upload page with the frame ID

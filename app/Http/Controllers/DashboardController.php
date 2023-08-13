@@ -14,10 +14,7 @@ use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
-//    use ClientAttributeTrait;
-    private $modifiedClients;
-
-    // Other methods...
+	private $modifiedClients;
 
     public function createClient(ClientDataRequest $request)
     {
@@ -48,8 +45,9 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
+	    Auth::user();
 
-        $search = $request->input('search');
+	    $search = $request->input('search');
 
         $modifiedClients = Client::query()
             ->when($search, function ($query) use ($search) {
@@ -72,8 +70,9 @@ class DashboardController extends Controller
 
     public function edit(Client $client,  Request $request)
     {
+	    Auth::user();
 
-        $client->save();
+	    $client->save();
         $modifiedClients = $this->transformBooleanValues([$client]);
         // image
         $width = 50;
