@@ -100,7 +100,7 @@ class UserUploadController extends Controller
 
 //        $croppedImage->save();
         // Redirect back to the upload page with the frame ID
-        return view('user-upload.update', ['frame' => $frame->id]);
+	    return redirect()->route('user-upload', ['client_url' => $client_url]);
     }
 
 
