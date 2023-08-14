@@ -67,13 +67,13 @@
 
                         <div class="tab-pane fade show active" id="v-pills-hospital" role="tabpanel" aria-labelledby="v-pills-hospital-tab">
                             <ul class="vertical-menu">
-                                <li><h5 class="menu-title">Schuttelaar & Partners</h5></li>
+                                <li><h5 class="menu-title">Fernando & Partners</h5></li>
                                 <li><a href="dashboard-hospital.html"><img src="/assets/images/svg-icon/dashboard.svg" class="img-fluid" alt="dashboard">Dashboard</a></li>
                                 {{--                                    <li><a href="hospital-appointment.html"><img src="assets/images/svg-icon/calender.svg" class="img-fluid" alt="appointments">Appointments</a></li>--}}
                                 {{--                                    <li><a href="hospital-doctor.html"><img src="assets/images/svg-icon/doctor.svg" class="img-fluid" alt="doctors">Doctors</a></li>--}}
                                 <li>
                                     <a href="{{ route('dashboard.index') }}">
-                                        <img src="/assets/images/svg-icon/backend.svg" class="img-fluid" alt="backend"><span>Klanten</span>
+                                        <img src="{{('/assets/images/svg-icon/backend.svg')}}" class="img-fluid" alt="backend"><span>Klanten</span>
                                     </a>
 {{--                                    <ul class="vertical-submenu">--}}
 {{--                                        <li><a href="">Edit</a></li>--}}

@@ -6,8 +6,6 @@
     });
 </script>
 
-// cropper
-
 <!-- JavaScript code for Cropper.js -->
 @isset($photoFileName)
     <script>
